@@ -1,2 +1,125 @@
-/*! For license information please see index.js.LICENSE.txt */
-(()=>{"use strict";var t={408:(t,e)=>{Symbol.for("react.element"),Symbol.for("react.portal"),Symbol.for("react.fragment"),Symbol.for("react.strict_mode"),Symbol.for("react.profiler"),Symbol.for("react.provider"),Symbol.for("react.context"),Symbol.for("react.forward_ref"),Symbol.for("react.suspense"),Symbol.for("react.memo"),Symbol.for("react.lazy"),Symbol.iterator;var o={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}},r=Object.assign,a={};function n(t,e,r){this.props=t,this.context=e,this.refs=a,this.updater=r||o}function p(){}function c(t,e,r){this.props=t,this.context=e,this.refs=a,this.updater=r||o}n.prototype.isReactComponent={},n.prototype.setState=function(t,e){if("object"!=typeof t&&"function"!=typeof t&&null!=t)throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");this.updater.enqueueSetState(this,t,e,"setState")},n.prototype.forceUpdate=function(t){this.updater.enqueueForceUpdate(this,t,"forceUpdate")},p.prototype=n.prototype;var s=c.prototype=new p;s.constructor=c,r(s,n.prototype),s.isPureReactComponent=!0;Array.isArray,Object.prototype.hasOwnProperty},294:(t,e,o)=>{o(408)}},e={};function o(r){var a=e[r];if(void 0!==a)return a.exports;var n=e[r]={exports:{}};return t[r](n,n.exports,o),n.exports}o.d=(t,e)=>{for(var r in e)o.o(e,r)&&!o.o(t,r)&&Object.defineProperty(t,r,{enumerable:!0,get:e[r]})},o.o=(t,e)=>Object.prototype.hasOwnProperty.call(t,e),o(294)})();
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Venetian = void 0;
+require("core-js/modules/web.dom-collections.iterator.js");
+require("core-js/modules/es.array.sort.js");
+require("core-js/modules/es.object.assign.js");
+var _react = require("react");
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+/*
+ *
+ */
+
+const SlideInner = props => {
+  //
+  const as = props.as;
+  const children = props.children;
+
+  //
+  delete props.as;
+  delete props.children;
+
+  //
+  return /*#__PURE__*/(0, _react.createElement)(as ? as : 'div', props, children);
+};
+const SlideActive = props => /*#__PURE__*/React.createElement(SlideInner, props);
+const SlideCollapsed = props => /*#__PURE__*/React.createElement(SlideInner, props);
+
+/*
+ *
+ */
+
+const SlideOuter = function SlideOuter(isActive, index, _ref) {
+  let {
+    children
+  } = _ref;
+  // 
+  const [Active, Collapsed] = children.sort((child, nextChild) => ({
+    [child.type === SlideActive || child.type === SlideCollapsed]: -1,
+    [nextChild.type === SlideActive]: 1
+  })[true]);
+
+  //
+  const Slide = isActive ? Active : Collapsed;
+
+  //
+  Object.assign(Slide.props, {
+    tabindex: index,
+    'aria-current': isActive,
+    'aria-expanded': isActive
+  });
+
+  //
+  return isActive ? Active : Collapsed;
+};
+
+/*
+ *
+ */
+
+const Venetian = _ref2 => {
+  let {
+    staticContent,
+    slides,
+    slideElement: Slide
+  } = _ref2;
+  // Append Static Content
+  const staticContentElement = (0, _react.useRef)();
+  (0, _react.useEffect)(() => {
+    staticContentElement.current.append(...staticContent.childNodes);
+  }, [staticContentElement]);
+
+  // Track Active Slide
+  const [activeSlide, setActiveSlide] = (0, _react.useState)(0);
+
+  // Create necessaey Unique ID's for ARIA
+  const activeSlideAreaId = (0, _react.useId)();
+
+  // Parse Children
+  const children = slides.map((slide, index) => {
+    //
+    const key = slide.key ? slide.key : "slide_".concat(index);
+    delete slide.key;
+
+    //
+    const isActive = activeSlide === index;
+
+    //
+    return /*#__PURE__*/React.createElement(Slide, _extends({}, slide, {
+      //
+      tabindex: index,
+      "aria-current": isActive,
+      "aria-expanded": isActive
+      //
+      ,
+      ariaTarget: activeSlideAreaId
+      //
+      ,
+      Content: SlideOuter.bind(undefined, isActive, index),
+      Active: SlideActive,
+      Collapsed: SlideCollapsed
+      //
+      ,
+      setActiveSlide: setActiveSlide
+      //
+      ,
+      index: index,
+      activeSlide: activeSlide
+    }));
+  });
+
+  // JSX
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "staticContent",
+    ref: staticContentElement
+  }), /*#__PURE__*/React.createElement("div", {
+    id: activeSlideAreaId,
+    className: "activeSlide"
+  }, children.splice(activeSlide, 1)), /*#__PURE__*/React.createElement("div", {
+    className: "collapsedSlides"
+  }, children));
+};
+exports.Venetian = Venetian;

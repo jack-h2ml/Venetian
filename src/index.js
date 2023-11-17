@@ -57,7 +57,7 @@ const SlideOuter = function(isActive, index, {children}) {
  *
  */
   
-export const Slider = ({staticContent, slides, slideElement: Slide}) => {
+export const Venetian = ({staticContent, slides, slideElement: Slide}) => {
 	
 	// Append Static Content
 	const staticContentElement = useRef();
