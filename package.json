@@ -1,6 +1,6 @@
 {
   "name": "@h2ml/venetian",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js"
