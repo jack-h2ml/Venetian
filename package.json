@@ -1,7 +1,6 @@
 {
-  "name": "venetian",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@h2ml/venetian",
+  "version": "1.0.1",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +8,15 @@
   "author": "Jack Notman",
   "license": "ISC",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  }
+    "react": "^18.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jack-h2ml/Venetian.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jack-h2ml/Venetian/issues"
+  },
+  "homepage": "https://github.com/jack-h2ml/Venetian#readme",
+  "description": ""
 }
