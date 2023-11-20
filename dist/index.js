@@ -1,9 +1,5 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Venetian = void 0;
 require("core-js/modules/web.dom-collections.iterator.js");
 require("core-js/modules/es.array.sort.js");
 require("core-js/modules/es.object.assign.js");
@@ -53,7 +49,7 @@ const SlideOuter = function SlideOuter(isActive, index, _ref) {
   });
 
   //
-  return isActive ? Active : Collapsed;
+  return Slide;
 };
 
 /*
@@ -69,7 +65,7 @@ const Venetian = _ref2 => {
   // Append Static Content
   const staticContentElement = (0, _react.useRef)();
   (0, _react.useEffect)(() => {
-    staticContentElement.current.append(...staticContent.childNodes);
+    if (staticContent) staticContentElement.current.append(...(staticContent.childNodes || []));
   }, [staticContentElement]);
 
   // Track Active Slide
@@ -112,7 +108,7 @@ const Venetian = _ref2 => {
   });
 
   // JSX
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, staticContent && /*#__PURE__*/React.createElement("div", {
     className: "staticContent",
     ref: staticContentElement
   }), /*#__PURE__*/React.createElement("div", {
@@ -122,4 +118,3 @@ const Venetian = _ref2 => {
     className: "collapsedSlides"
   }, children));
 };
-exports.Venetian = Venetian;

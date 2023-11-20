@@ -50,19 +50,19 @@ const SlideOuter = function(isActive, index, {children}) {
 	});
 	
 	//
-	return isActive ? Active : Collapsed;
+	return Slide;
 }
 
 /*
  *
  */
   
-export const Venetian = ({staticContent, slides, slideElement: Slide}) => {
+const Venetian = ({staticContent, slides, slideElement: Slide}) => {
 	
 	// Append Static Content
 	const staticContentElement = useRef();
 	useEffect(() => {
-		staticContentElement.current.append(...staticContent.childNodes)
+		if(staticContent) staticContentElement.current.append(...(staticContent.childNodes || []))
 	}, [staticContentElement]);
 	
 	// Track Active Slide
@@ -106,7 +106,7 @@ export const Venetian = ({staticContent, slides, slideElement: Slide}) => {
 	// JSX
 	return (
 		<>
-			<div className='staticContent' ref={staticContentElement}/>
+			{(staticContent) && (<div className='staticContent' ref={staticContentElement}/>)}
 			<div id={activeSlideAreaId} className='activeSlide'>
 				{children.splice(activeSlide, 1)}
 			</div>
